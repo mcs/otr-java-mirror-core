@@ -1,0 +1,6 @@
+# ignore target directory
+/*
+.svn
+!/src
+!/pom.xml
+!.gitignore
