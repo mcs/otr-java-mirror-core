@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <import resource="classpath:spring-context.xml" />
+
+    <bean id="mockEntityDAO" class="otr.mirror.core.dao.MockEntityDAOImpl" parent="dataAccessObject" />
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceUnitName" value="otr-mirror-test"/>
+        <property name="jpaVendorAdapter">
+            <bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">${db.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${db.auto}</prop>
+                <prop key="hibernate.show_sql">${db.show_sql}</prop>
+                <prop key="hibernate.format_sql">${db.format_sql}</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

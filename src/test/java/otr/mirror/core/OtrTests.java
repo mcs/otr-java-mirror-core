@@ -19,7 +19,7 @@ public class OtrTests extends AbstractTransactionalSpringContextTests {
 
     @Override
     protected String[] getConfigLocations() {
-        return new String[] {"classpath:spring-context.xml"};
+        return new String[] {"classpath:spring-test-context.xml"};
     }
 
 

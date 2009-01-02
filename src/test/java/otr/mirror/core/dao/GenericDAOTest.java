@@ -2,8 +2,7 @@ package otr.mirror.core.dao;
 
 import java.util.List;
 import otr.mirror.core.OtrTests;
-import otr.mirror.core.dao.test.MockEntityDAO;
-import otr.mirror.core.model.test.MockEntity;
+import otr.mirror.core.model.MockEntity;
 
 /**
  *

@@ -1,14 +1,14 @@
 package otr.mirror.core.dao;
 
 import java.util.List;
-import otr.mirror.core.model.BusinessObject;
+import otr.mirror.core.model.AbstractEntity;
 
 /**
  * A generic base implementation of the DAO pattern.
  * 
  * @author Marcus Krassmann
  */
-public interface GenericDAO<T extends BusinessObject> {
+public interface GenericDAO<T extends AbstractEntity> {
 
     /** 
      * Persists a business object. Persists all kinds of BusinessObjects.

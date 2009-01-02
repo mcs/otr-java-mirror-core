@@ -83,7 +83,9 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
+<!--    
     <bean id="mockEntityDAO" class="otr.mirror.core.dao.test.MockEntityDAOImpl" parent="dataAccessObject" />
+-->
 
     <!-- Services -->
 </beans>

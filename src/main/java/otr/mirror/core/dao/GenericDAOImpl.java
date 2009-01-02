@@ -10,14 +10,14 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
-import otr.mirror.core.model.BusinessObject;
+import otr.mirror.core.model.AbstractEntity;
 
 /**
  * An implementation of the GenericDAO.
  * 
  * @author Marcus Krassmann
  */
-public abstract class GenericDAOImpl<T extends BusinessObject> extends JpaDaoSupport implements GenericDAO<T> {
+public abstract class GenericDAOImpl<T extends AbstractEntity> extends JpaDaoSupport implements GenericDAO<T> {
 
     private static final Logger log = Logger.getLogger(GenericDAO.class);
 
