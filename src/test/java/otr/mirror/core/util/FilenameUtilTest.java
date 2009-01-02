@@ -3,6 +3,7 @@ package otr.mirror.core.util;
 import java.util.Calendar;
 import java.util.Date;
 import junit.framework.TestCase;
+import otr.mirror.core.model.Format;
 
 /**
  * Tests all methods of FilenameUtil.
@@ -47,6 +48,17 @@ public class FilenameUtilTest extends TestCase {
     }
 
     /**
+     * Test of getDuration method, of class FilenameUtil.
+     */
+    public void testGetDuration() {
+        System.out.println("getDuration");
+        String filename = files[2];
+        int expResult = 185;
+        int result = FilenameUtil.getDuration(filename);
+        assertEquals(expResult, result);
+    }
+
+    /**
      * Test of getEndDate method, of class FilenameUtil.
      */
     public void testGetEndDate() {
@@ -58,5 +70,44 @@ public class FilenameUtilTest extends TestCase {
         Date expResult = cal.getTime();
         Date result = FilenameUtil.getEndDate(filename);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTvChannel method, of class FilenameUtil.
+     */
+    public void testGetTvChannel() {
+        System.out.println("getTvChannel");
+        String filename = files[0];
+        String expResult = "3sat";
+        String result = FilenameUtil.getTvChannel(filename);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getFormat method, of class FilenameUtil.
+     */
+    public void testGetFormat() {
+        // positive examples
+        System.out.println("getFormat");
+        String filename = files[0];
+        Format expResult = Format.AVI;
+        Format result = FilenameUtil.getFormat(filename);
+        assertSame(expResult, result);
+
+        filename = files[1];
+        expResult = Format.HQ;
+        result = FilenameUtil.getFormat(filename);
+        assertSame(expResult, result);
+
+        filename = files[2];
+        expResult = Format.MP4;
+        result = FilenameUtil.getFormat(filename);
+        assertSame(expResult, result);
+
+        // negative example
+        filename = "Some_crappy_otrkey";
+        expResult = Format.UNKNOWN;
+        result = FilenameUtil.getFormat(filename);
+        assertSame(expResult, result);
     }
 }

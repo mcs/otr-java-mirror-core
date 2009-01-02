@@ -8,6 +8,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import otr.mirror.core.model.Format;
 
 /**
  * Provides some useful methods to extract the nested information of an OTRKEY
@@ -17,6 +18,12 @@ import java.util.regex.Pattern;
  */
 public class FilenameUtil {
 
+    public static final int NAME = 1;
+    public static final int START_DATE = 2;
+    public static final int START_TIME = 3;
+    public static final int TV_CHANNEL = 4;
+    public static final int DURATION = 5;
+    public static final int FORMAT = 6;
     private static final Logger LOGGER = Logger.getLogger(FilenameUtil.class);
     /**
      * This pattern is divided into six groups:
@@ -35,38 +42,67 @@ public class FilenameUtil {
 
     public static String getName(String filename) {
         Matcher m = PATTERN.matcher(filename);
-        String result = "";
+        String result = "<unknown name>";
         if (m.matches()) {
-            result = m.group(1).replace('_', ' ');
+            result = m.group(NAME).replace('_', ' ');
         }
         return result;
     }
 
     public static Date getStartDate(String filename) {
+        Date result = null;
         DateFormat df = new SimpleDateFormat("yy.MM.dd HH-mm");
         Matcher m = PATTERN.matcher(filename);
         if (m.matches()) {
             try {
-                return df.parse(m.group(2) + " " + m.group(3));
+                result = df.parse(m.group(START_DATE) + " " + m.group(START_TIME));
             } catch (ParseException ex) {
                 LOGGER.error("Should never happen! Regex ensures format!", ex);
             }
         }
-        return null;
+        return result;
+    }
+
+    public static int getDuration(String filename) {
+        int duration = Integer.MIN_VALUE;
+        Matcher m = PATTERN.matcher(filename);
+        if (m.matches()) {
+            duration = Integer.valueOf(m.group(DURATION));
+        }
+        return duration;
     }
 
     public static Date getEndDate(String filename) {
+        Date start = getStartDate(filename);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        cal.add(Calendar.MINUTE, getDuration(filename));
+        return cal.getTime();
+    }
+
+    public static String getTvChannel(String filename) {
         Matcher m = PATTERN.matcher(filename);
+        String result = "<unknown tv channel>";
         if (m.matches()) {
-            int duration = Integer.valueOf(m.group(5));
-            Date start = getStartDate(filename);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(start);
-            cal.add(Calendar.MINUTE, duration);
-            return cal.getTime();
+            result = m.group(TV_CHANNEL);
         }
-        return null;
+        return result;
+    }
 
-
+    public static Format getFormat(String filename) {
+        Matcher m = PATTERN.matcher(filename);
+        Format result = Format.UNKNOWN;
+        if (m.matches()) {
+            String format = m.group(FORMAT);
+            if (format.equalsIgnoreCase("avi")) {
+                result = Format.AVI;
+            } else if (format.equalsIgnoreCase("hq.avi")) {
+                result = Format.HQ;
+            } else if (format.equalsIgnoreCase("mp4")) {
+                result = Format.MP4;
+            }
+        }
+        return result;
+        
     }
 }
