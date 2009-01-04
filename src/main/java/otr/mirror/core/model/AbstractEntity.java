@@ -102,7 +102,7 @@ public abstract class AbstractEntity implements Serializable {
     }
 
     @PrePersist
-    public void prePersist() {
+    public void setCreationDate() {
         if (creationDate == null) {
             this.creationDate = new Date();
         }
@@ -110,7 +110,7 @@ public abstract class AbstractEntity implements Serializable {
     }
 
     @PreUpdate
-    public void preUpdate() {
+    public void setModifiedDate() {
         this.modifiedDate = new Date();
     }
 

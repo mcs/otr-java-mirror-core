@@ -1,6 +1,6 @@
 package otr.mirror.core.dao;
 
-import otr.mirror.core.model.MockEntity;
+import otr.mirror.core.model.Recording;
 
 
 /**
@@ -8,6 +8,6 @@ import otr.mirror.core.model.MockEntity;
  *
  * @author Marcus Krassmann
  */
-public interface MockEntityDAO extends GenericDAO<MockEntity> {
+public interface MockEntityDAO extends GenericDAO<Recording> {
     // no new methods needed, just terminate the generic type
 }

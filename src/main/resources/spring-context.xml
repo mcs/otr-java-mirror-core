@@ -42,9 +42,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="persistenceUnitName" value="otr-mirror"/>
         <property name="jpaVendorAdapter">
-            <bean
-				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-            </bean>
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
         <property name="jpaProperties">
             <props>
@@ -62,7 +60,7 @@
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <!-- Email -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -80,12 +78,14 @@
 
     <!-- Data Access Objects -->
     <bean id="dataAccessObject" class="otr.mirror.core.dao.GenericDAOImpl" abstract="true" scope="singleton">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-<!--    
-    <bean id="mockEntityDAO" class="otr.mirror.core.dao.test.MockEntityDAOImpl" parent="dataAccessObject" />
--->
+    <bean id="recordingDAO" class="otr.mirror.core.dao.RecordingDAOImpl" parent="dataAccessObject"/>
 
     <!-- Services -->
+    <bean id="showRecordingsService" class="otr.mirror.core.service.ShowRecordingsServiceImpl">
+        <property name="recordingDAO" ref="recordingDAO"/>
+        <property name="storagePath" value="${mirror.path}"/>
+    </bean>
 </beans>

@@ -12,7 +12,7 @@ import otr.mirror.core.model.Format;
  */
 public class FilenameUtilTest extends TestCase {
 
-    private String[] files = {
+    public static final String[] files = {
         "Katie_Melua_Live_in_Duesseldorf_08.12.31_05-15_3sat_45_TVOON_DE.mpg.avi.otrkey",
         "X_Men_Der_letzte_Widerstand_09.01.01_20-15_rtl_120_TVOON_DE.mpg.HQ.avi.otrkey",
         "Alexander_09.01.01_20-15_pro7_185_TVOON_DE.mpg.mp4.otrkey"
@@ -90,7 +90,7 @@ public class FilenameUtilTest extends TestCase {
         // positive examples
         System.out.println("getFormat");
         String filename = files[0];
-        Format expResult = Format.AVI;
+        Format expResult = Format.DIVX;
         Format result = FilenameUtil.getFormat(filename);
         assertSame(expResult, result);
 

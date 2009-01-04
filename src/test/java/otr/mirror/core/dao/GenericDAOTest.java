@@ -2,7 +2,7 @@ package otr.mirror.core.dao;
 
 import java.util.List;
 import otr.mirror.core.OtrTests;
-import otr.mirror.core.model.MockEntity;
+import otr.mirror.core.model.Recording;
 
 /**
  *
@@ -10,23 +10,23 @@ import otr.mirror.core.model.MockEntity;
  */
 public class GenericDAOTest extends OtrTests {
 
-    private MockEntityDAO mockEntityDAO;
-    private MockEntity persistentEntity;
+    private RecordingDAO recordingDAO;
+    private Recording persistentEntity;
 
     public GenericDAOTest(String testName) {
         super(testName);
 
     }
 
-    public void setMockEntityDAO(MockEntityDAO mockEntityDAO) {
-        this.mockEntityDAO = mockEntityDAO;
+    public void setRecordingDAO(RecordingDAO recordingDAO) {
+        this.recordingDAO = recordingDAO;
     }
 
     @Override
     protected void onSetUpInTransaction() throws Exception {
-        MockEntity me = new MockEntity();
-        me.setSomeInt(42);
-        mockEntityDAO.saveOrUpdate(me);
+        Recording me = new Recording();
+        me.setFilename("MyName");
+        recordingDAO.saveOrUpdate(me);
         persistentEntity = me;
     }
 
@@ -35,9 +35,9 @@ public class GenericDAOTest extends OtrTests {
      */
     public void testSaveOrUpdate() {
         System.out.println("saveOrUpdate");
-        MockEntity me = new MockEntity();
+        Recording me = new Recording();
         assertNull(me.getId());
-        mockEntityDAO.saveOrUpdate(me);
+        recordingDAO.saveOrUpdate(me);
         assertNotNull(me.getId());
     }
 
@@ -46,11 +46,11 @@ public class GenericDAOTest extends OtrTests {
      */
     public void testDelete() {
         System.out.println("delete");
-        MockEntity me = mockEntityDAO.findById(persistentEntity.getId());
+        Recording me = recordingDAO.findById(persistentEntity.getId());
         assertNotNull(me);
 
-        mockEntityDAO.delete(persistentEntity);
-        me = mockEntityDAO.findById(persistentEntity.getId());
+        recordingDAO.delete(persistentEntity);
+        me = recordingDAO.findById(persistentEntity.getId());
         assertNull(me);
     }
 
@@ -60,10 +60,10 @@ public class GenericDAOTest extends OtrTests {
     public void testFindById() {
         System.out.println("findById");
         Long id = persistentEntity.getId();
-        MockEntity result = mockEntityDAO.findById(id);
+        Recording result = recordingDAO.findById(id);
         assertEquals(persistentEntity, result);
 
-        result = mockEntityDAO.findById(-1);
+        result = recordingDAO.findById(-1);
         assertNull(result);
     }
 
@@ -72,10 +72,10 @@ public class GenericDAOTest extends OtrTests {
      */
     public void testFindAll() {
         System.out.println("findAll");
-        mockEntityDAO.saveOrUpdate(new MockEntity());
-        List<MockEntity> result = mockEntityDAO.findAll();
+        recordingDAO.saveOrUpdate(new Recording());
+        List<Recording> result = recordingDAO.findAll();
         assertEquals(2, result.size());
-        assertNotSame(result.get(0).getSomeInt(), result.get(1).getSomeInt());
+        assertNotSame(result.get(0).getFilename(), result.get(1).getFilename());
     }
 
     /**
@@ -83,9 +83,9 @@ public class GenericDAOTest extends OtrTests {
      */
     public void testFindByExample() {
         System.out.println("findByExample");
-        MockEntity entity = new MockEntity();
-        entity.setSomeInt(42);
-        List<MockEntity> result = mockEntityDAO.findByExample(entity);
+        Recording entity = new Recording();
+        entity.setFilename("MyName");
+        List<Recording> result = recordingDAO.findByExample(entity);
         assertEquals(1, result.size());
         assertEquals(persistentEntity, result.get(0));
     }
@@ -95,14 +95,14 @@ public class GenericDAOTest extends OtrTests {
      */
     public void testFindUniqueByExample() {
         System.out.println("findUniqueByExample");
-        MockEntity entity = new MockEntity();
-        entity.setSomeInt(42);
-        MockEntity result = mockEntityDAO.findUniqueByExample(entity);
+        Recording entity = new Recording();
+        entity.setFilename("MyName");
+        Recording result = recordingDAO.findUniqueByExample(entity);
         assertEquals(persistentEntity, result);
 
-        entity = new MockEntity();
-        entity.setSomeInt(666);
-        result = mockEntityDAO.findUniqueByExample(entity);
+        entity = new Recording();
+        entity.setFilename("AnotherName");
+        result = recordingDAO.findUniqueByExample(entity);
         assertNull(result);
     }
 }

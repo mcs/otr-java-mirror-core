@@ -18,6 +18,8 @@ import otr.mirror.core.model.Format;
  */
 public class FilenameUtil {
 
+    public static final FilenameUtil INSTANCE = new FilenameUtil();
+
     public static final int NAME = 1;
     public static final int START_DATE = 2;
     public static final int START_TIME = 3;
@@ -37,7 +39,7 @@ public class FilenameUtil {
     private static final Pattern PATTERN = Pattern.compile("(\\w+)_(\\d\\d\\.\\d\\d\\.\\d\\d)_(\\d\\d-\\d\\d)_(\\w+)_(\\d+)_TVOON_DE\\.mpg\\.(avi|HQ\\.avi|mp4)\\.otrkey");
 
     private FilenameUtil() {
-        // static utility class
+        // static utility class, optionally use as singleton
     }
 
     public static String getName(String filename) {
@@ -95,7 +97,7 @@ public class FilenameUtil {
         if (m.matches()) {
             String format = m.group(FORMAT);
             if (format.equalsIgnoreCase("avi")) {
-                result = Format.AVI;
+                result = Format.DIVX;
             } else if (format.equalsIgnoreCase("hq.avi")) {
                 result = Format.HQ;
             } else if (format.equalsIgnoreCase("mp4")) {

@@ -7,7 +7,7 @@ package otr.mirror.core.model;
  */
 public enum Format {
 
-    AVI,
+    DIVX,
     HQ,
     MP4,
     UNKNOWN;
