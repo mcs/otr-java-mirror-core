@@ -52,7 +52,7 @@ public class ShowRecordingsServiceImpl implements ShowRecordingsService {
 
             @Override
             public int compare(Recording o1, Recording o2) {
-                return o2.getCreationDate().compareTo(o1.getCreationDate());
+                return o2.getStartTime().compareTo(o1.getStartTime());
             }
         });
         //return recordingDAO.findAllByCreationDate();

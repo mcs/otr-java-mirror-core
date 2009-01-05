@@ -45,8 +45,8 @@ public class ShowRecordingsServiceTest extends OtrTests {
         List<Recording> result = showRecordingsService.getRecordings();
         assertSame(FilenameUtilTest.files.length, result.size());
         for (int i = 0; i < FilenameUtilTest.files.length - 1; i++) {
-            System.out.println("*** " + result.get(i).getCreationDate() + " is after " + result.get(i+1).getCreationDate());
-            assertTrue(result.get(i).getCreationDate().after(result.get(i+1).getCreationDate()));
+            System.out.println("*** " + result.get(i).getStartTime() + " is after " + result.get(i+1).getStartTime());
+            assertTrue(result.get(i).getStartTime().after(result.get(i+1).getStartTime()));
         }
     }
 }

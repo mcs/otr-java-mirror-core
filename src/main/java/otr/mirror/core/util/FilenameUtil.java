@@ -61,6 +61,8 @@ public class FilenameUtil {
             } catch (ParseException ex) {
                 LOGGER.error("Should never happen! Regex ensures format!", ex);
             }
+        } else {
+            LOGGER.error("Filename not standard OTRKEY: " + filename);
         }
         return result;
     }
