@@ -1,11 +1,6 @@
 package otr.mirror.core.service;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import otr.mirror.core.dao.RecordingDAO;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,33 +27,33 @@ public class ShowRecordingsServiceImpl implements ShowRecordingsService {
     @Override
     @Transactional
     public List<Recording> getRecordings() {
-        File dir = new File(storagePath);
-        File[] otrkeys = dir.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith("otrkey");
-            }
-        });
-        otrkeys = otrkeys == null ? new File[0] : otrkeys;
-        List<Recording> result = new ArrayList<Recording>();
-        Recording rec;
-        for (File each : otrkeys) {
-            rec = new Recording(each.getName());
-            rec.setAvailable(true);
-            rec.setCreationDate(new Date(each.lastModified()));
-            rec.setFilesize(each.length());
-            result.add(rec);
-        }
-        Collections.sort(result, new Comparator<Recording>() {
-
-            @Override
-            public int compare(Recording o1, Recording o2) {
-                return o2.getStartTime().compareTo(o1.getStartTime());
-            }
-        });
-        //return recordingDAO.findAllByCreationDate();
-        return result;
+//        File dir = new File(storagePath);
+//        File[] otrkeys = dir.listFiles(new FilenameFilter() {
+//
+//            @Override
+//            public boolean accept(File dir, String name) {
+//                return name.endsWith("otrkey");
+//            }
+//        });
+//        otrkeys = otrkeys == null ? new File[0] : otrkeys;
+//        List<Recording> result = new ArrayList<Recording>();
+//        Recording rec;
+//        for (File each : otrkeys) {
+//            rec = new Recording(each.getName());
+//            rec.setAvailable(true);
+//            rec.setCreationDate(new Date(each.lastModified()));
+//            rec.setFilesize(each.length());
+//            result.add(rec);
+//        }
+//        Collections.sort(result, new Comparator<Recording>() {
+//
+//            @Override
+//            public int compare(Recording o1, Recording o2) {
+//                return o2.getStartTime().compareTo(o1.getStartTime());
+//            }
+//        });
+        return recordingDAO.findAllByCreationDate();
+//        return result;
     }
 
     @Override
