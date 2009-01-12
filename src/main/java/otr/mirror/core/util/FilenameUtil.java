@@ -27,6 +27,7 @@ public class FilenameUtil {
     public static final int DURATION = 5;
     public static final int FORMAT = 6;
     private static final Logger LOGGER = Logger.getLogger(FilenameUtil.class);
+
     /**
      * This pattern is divided into six groups:
      * 1. the filename ("Name_of_the_Recording")
@@ -42,6 +43,11 @@ public class FilenameUtil {
         // static utility class, optionally use as singleton
     }
 
+    /**
+     * Gets the name of the recording. Underscores are replaced by white spaces.
+     * @param filename the filename
+     * @return the name of the recording
+     */
     public static String getName(String filename) {
         Matcher m = PATTERN.matcher(filename);
         String result = "<unknown name>";
@@ -51,6 +57,11 @@ public class FilenameUtil {
         return result;
     }
 
+    /**
+     * Gets the start date of the recording.
+     * @param filename the filename
+     * @return the start date
+     */
     public static Date getStartDate(String filename) {
         Date result = null;
         DateFormat df = new SimpleDateFormat("yy.MM.dd HH-mm");
@@ -67,6 +78,11 @@ public class FilenameUtil {
         return result;
     }
 
+    /**
+     * Gets the duration of the recording. The unit of measure is minutes.
+     * @param filename the filename
+     * @return the duration of the recording
+     */
     public static int getDuration(String filename) {
         int duration = Integer.MIN_VALUE;
         Matcher m = PATTERN.matcher(filename);
@@ -76,6 +92,11 @@ public class FilenameUtil {
         return duration;
     }
 
+    /**
+     * Gets the end date of the recording.
+     * @param filename the filename
+     * @return the end date of the recording
+     */
     public static Date getEndDate(String filename) {
         Date start = getStartDate(filename);
         Calendar cal = Calendar.getInstance();
@@ -84,6 +105,11 @@ public class FilenameUtil {
         return cal.getTime();
     }
 
+    /**
+     * Gets the tv channel of the recording.
+     * @param filename the filename
+     * @return the tv channel of the recording
+     */
     public static String getTvChannel(String filename) {
         Matcher m = PATTERN.matcher(filename);
         String result = "<unknown tv channel>";
@@ -93,6 +119,16 @@ public class FilenameUtil {
         return result;
     }
 
+    /**
+     * Gets the quality codec format of the recording. These formats exist:
+     * <ul>
+     * <li><tt>Format.DIVX</tt> for DivX encoded recordings</li>
+     * <li><tt>Format.HQ</tt> for H.264 encoded recordings</li>
+     * <li><tt>MP4</tt> for mp4 encoded recordings</li>
+     * </ul>
+     * @param filename the filename
+     * @return the format of the recording
+     */
     public static Format getFormat(String filename) {
         Matcher m = PATTERN.matcher(filename);
         Format result = Format.UNKNOWN;

@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
-import org.springframework.orm.jpa.support.JpaDaoSupport;
 import otr.mirror.core.model.AbstractEntity;
 
 /**
@@ -17,9 +16,9 @@ import otr.mirror.core.model.AbstractEntity;
  * 
  * @author Marcus Krassmann
  */
-public abstract class GenericDAOImpl<T extends AbstractEntity> extends JpaDaoSupport implements GenericDAO<T> {
+public abstract class AbstractDAOImpl<T extends AbstractEntity> implements AbstractDAO<T> {
 
-    private static final Logger log = Logger.getLogger(GenericDAO.class);
+    private static final Logger log = Logger.getLogger(AbstractDAO.class);
 
     @PersistenceContext
     protected EntityManager em;
@@ -44,7 +43,6 @@ public abstract class GenericDAOImpl<T extends AbstractEntity> extends JpaDaoSup
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public T findById(long id) {
         return em.find(getEntityClass(), id);
     }
@@ -54,7 +52,7 @@ public abstract class GenericDAOImpl<T extends AbstractEntity> extends JpaDaoSup
     public List<T> findAll() {
         log.debug("EntityManager = " + em);
         Criteria crit = getSession().createCriteria(getEntityClass());
-        return (List<T>) crit.list();
+        return crit.list();
     }
     
     @SuppressWarnings("unchecked")
@@ -106,8 +104,7 @@ public abstract class GenericDAOImpl<T extends AbstractEntity> extends JpaDaoSup
             // clazz was directly generic typed, t2 is generic TypeVariable
             return null;
         }
-
-        if (t instanceof Class) {
+        else if (t instanceof Class) {
             return getGenericParameterClass((Class) t);
         }
 

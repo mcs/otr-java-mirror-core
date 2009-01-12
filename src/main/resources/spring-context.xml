@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="
-                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
     <!-- import properties -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -17,27 +19,8 @@
     </bean>
 
     <!-- database configuration -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="maxPoolSize" value="10"/>
-        <property name="driverClass" value="${db.driver_class}"/>
-        <property name="jdbcUrl" value="${db.url}"/>
-        <property name="user" value="${db.username}"/>
-        <property name="password" value="${db.password}"/>
-        <property name="initialPoolSize" value="5"/>
-        <property name="idleConnectionTestPeriod" value="10800"/>
-        <property name="maxIdleTime" value="21600"/>
-    </bean>
+    <import resource="classpath:db-context.xml"/>
 
-    <!-- JPA configuration -->
-<!--    <bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
-           <property name="persistenceXmlLocations">
-              <list>
-                <value>classpath:/META-INF/persistence.xml</value>
-              </list>
-           </property>
-           <property name="defaultDataSource" ref="dataSource"/>
-     </bean>
--->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="persistenceUnitName" value="otr-mirror"/>
@@ -77,9 +60,7 @@
     </bean>
 
     <!-- Data Access Objects -->
-    <bean id="dataAccessObject" class="otr.mirror.core.dao.GenericDAOImpl" abstract="true" scope="singleton">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
+    <bean id="dataAccessObject" class="otr.mirror.core.dao.AbstractDAOImpl" abstract="true" scope="singleton"/>
 
     <bean id="recordingDAO" class="otr.mirror.core.dao.RecordingDAOImpl" parent="dataAccessObject"/>
 

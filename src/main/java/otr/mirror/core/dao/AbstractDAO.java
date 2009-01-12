@@ -8,7 +8,7 @@ import otr.mirror.core.model.AbstractEntity;
  * 
  * @author Marcus Krassmann
  */
-public interface GenericDAO<T extends AbstractEntity> {
+public interface AbstractDAO<T extends AbstractEntity> {
 
     /** 
      * Persists a business object. Persists all kinds of BusinessObjects.

@@ -11,8 +11,19 @@ import otr.mirror.core.model.Recording;
  */
 public interface ShowRecordingsService {
 
+    /**
+     * Gets a list of all existing recordings.
+     * 
+     * @return all recordings
+     */
     List<Recording> getRecordings();
 
+    /**
+     * Gets a file object pointing to the real file.
+     * 
+     * @param filename the filename
+     * @return the file object for the given filename
+     */
     File getRecording(String filename);
     
 }

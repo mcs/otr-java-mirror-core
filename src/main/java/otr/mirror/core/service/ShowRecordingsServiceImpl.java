@@ -8,8 +8,8 @@ import java.util.Comparator;
 import java.util.Date;
 import otr.mirror.core.dao.RecordingDAO;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 import otr.mirror.core.model.Recording;
-import otr.mirror.core.util.FilenameUtil;
 
 /**
  * Standard implementation of ShowRecordingsService.
@@ -30,6 +30,7 @@ public class ShowRecordingsServiceImpl implements ShowRecordingsService {
     }
 
     @Override
+    @Transactional
     public List<Recording> getRecordings() {
         File dir = new File(storagePath);
         File[] otrkeys = dir.listFiles(new FilenameFilter() {
@@ -41,8 +42,9 @@ public class ShowRecordingsServiceImpl implements ShowRecordingsService {
         });
         otrkeys = otrkeys == null ? new File[0] : otrkeys;
         List<Recording> result = new ArrayList<Recording>();
+        Recording rec;
         for (File each : otrkeys) {
-            Recording rec = new Recording(each.getName());
+            rec = new Recording(each.getName());
             rec.setAvailable(true);
             rec.setCreationDate(new Date(each.lastModified()));
             rec.setFilesize(each.length());

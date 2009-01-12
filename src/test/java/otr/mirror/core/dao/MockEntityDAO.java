@@ -8,6 +8,6 @@ import otr.mirror.core.model.Recording;
  *
  * @author Marcus Krassmann
  */
-public interface MockEntityDAO extends GenericDAO<Recording> {
+public interface MockEntityDAO extends AbstractDAO<Recording> {
     // no new methods needed, just terminate the generic type
 }

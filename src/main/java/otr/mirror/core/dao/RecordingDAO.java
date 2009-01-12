@@ -8,7 +8,7 @@ import otr.mirror.core.model.Recording;
  * 
  * @author Marcus Krassmann
  */
-public interface RecordingDAO extends GenericDAO<Recording> {
+public interface RecordingDAO extends AbstractDAO<Recording> {
 
     List<Recording> findAllByCreationDate();
 }

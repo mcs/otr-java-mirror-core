@@ -36,6 +36,7 @@ public class GenericDAOTest extends OtrTests {
     public void testSaveOrUpdate() {
         System.out.println("saveOrUpdate");
         Recording me = new Recording();
+        me.setFilename("testname");
         assertNull(me.getId());
         recordingDAO.saveOrUpdate(me);
         assertNotNull(me.getId());
@@ -72,7 +73,9 @@ public class GenericDAOTest extends OtrTests {
      */
     public void testFindAll() {
         System.out.println("findAll");
-        recordingDAO.saveOrUpdate(new Recording());
+        Recording rec = new Recording();
+        rec.setFilename("lala");
+        recordingDAO.saveOrUpdate(rec);
         List<Recording> result = recordingDAO.findAll();
         assertEquals(2, result.size());
         assertNotSame(result.get(0).getFilename(), result.get(1).getFilename());
