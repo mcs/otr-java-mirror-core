@@ -1,13 +1,9 @@
 package otr.mirror.core.model;
 
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import otr.mirror.core.util.FilenameUtil;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * A recording represents an OTRKEY file with its information.
@@ -26,17 +22,19 @@ public class Recording extends AbstractEntity {
     private String tvChannel;
     private Format format;
     private Boolean available;
+    private Integer downloaded;
 
     /**
      * Constructs a completely uninitialized recording.
      */
-    public Recording() {
+    protected Recording() {
         // default bean constructor
     }
 
     /**
      * Constructs a fully initialized recording by parsing all relevant
-     * infrmation from the filename.
+     * infrmation from the filename. The recording will be set to
+     * "not available" by default.
      *
      * @param filename the filename of the recording
      */
@@ -45,6 +43,8 @@ public class Recording extends AbstractEntity {
         this.startTime = FilenameUtil.getStartDate(filename);
         this.tvChannel = FilenameUtil.getTvChannel(filename);
         this.format = FilenameUtil.getFormat(filename);
+        this.available = false;
+        this.downloaded = 0;
     }
 
     /**
@@ -89,7 +89,7 @@ public class Recording extends AbstractEntity {
      * 
      * @return the start date
      */
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getStartTime() {
         return startTime;
     }
@@ -165,6 +165,31 @@ public class Recording extends AbstractEntity {
      */
     public void setFormat(Format format) {
         this.format = format;
+    }
+
+    /**
+     * Gets how many times this file has been downloaded.
+     *
+     * @return number of downloads
+     */
+    public Integer getDownloaded() {
+        return downloaded;
+    }
+
+    /**
+     * Sets how many times this file has been downloaded.
+     * 
+     * @param downloaded number of downloads
+     */
+    public void setDownloaded(Integer downloaded) {
+        this.downloaded = downloaded;
+    }
+
+    public void addDownload() {
+        if (this.downloaded == null) {
+            downloaded = 0;
+        }
+        downloaded++;
     }
 
     /**

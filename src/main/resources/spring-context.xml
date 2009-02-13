@@ -64,9 +64,36 @@
 
     <bean id="recordingDAO" class="otr.mirror.core.dao.RecordingDAOImpl" parent="dataAccessObject"/>
 
+    <bean id="downloadDAO" class="otr.mirror.core.dao.DownloadDAOImpl" parent="dataAccessObject"/>
+
+    <bean id="userDAO" class="otr.mirror.core.dao.UserDAOImpl" parent="dataAccessObject"/>
+
     <!-- Services -->
-    <bean id="showRecordingsService" class="otr.mirror.core.service.ShowRecordingsServiceImpl">
-        <property name="recordingDAO" ref="recordingDAO"/>
+    <bean id="fileService" class="otr.mirror.core.service.FileServiceImpl">
         <property name="storagePath" value="${mirror.path}"/>
     </bean>
+
+    <bean id="showRecordingsService" class="otr.mirror.core.service.ShowRecordingsServiceImpl">
+        <property name="recordingDAO" ref="recordingDAO"/>
+        <property name="downloadDAO" ref="downloadDAO"/>
+        <property name="fileService" ref="fileService"/>
+    </bean>
+
+    <bean id="fetchRecordingsService" class="otr.mirror.core.service.FetchRecordingsServiceImpl">
+        <property name="recordingDAO" ref="recordingDAO"/>
+        <property name="fileService" ref="fileService"/>
+    </bean>
+
+    <bean id="maintenanceService" class="otr.mirror.core.service.MaintenanceServiceImpl">
+        <property name="recordingDAO" ref="recordingDAO"/>
+        <property name="fileService" ref="fileService"/>
+    </bean>
+
+    <bean id="loginService" class="otr.mirror.core.service.LoginServiceImpl">
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
+
+    <!-- Quartz scheduled jobs -->
+    <import resource="classpath:scheduler-context.xml"/>
+
 </beans>

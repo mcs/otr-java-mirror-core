@@ -1,10 +1,15 @@
 package otr.mirror.core.service;
 
-import java.io.File;
-import otr.mirror.core.dao.RecordingDAO;
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
+import otr.mirror.core.dao.DownloadDAO;
+import otr.mirror.core.dao.RecordingDAO;
+import otr.mirror.core.model.Download;
 import otr.mirror.core.model.Recording;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Standard implementation of ShowRecordingsService.
@@ -13,53 +18,63 @@ import otr.mirror.core.model.Recording;
  */
 public class ShowRecordingsServiceImpl implements ShowRecordingsService {
 
+    private static final Log logger = LogFactory.getLog(ShowRecordingsServiceImpl.class);
     private RecordingDAO recordingDAO;
-    private String storagePath;
+    private DownloadDAO downloadDAO;
+    private FileService fileService;
 
     public void setRecordingDAO(RecordingDAO recordingDAO) {
         this.recordingDAO = recordingDAO;
     }
 
-    public void setStoragePath(String storagePath) {
-        this.storagePath = storagePath;
+    public void setDownloadDAO(DownloadDAO downloadDAO) {
+        this.downloadDAO = downloadDAO;
+    }
+
+    public void setFileService(FileService fileService) {
+        this.fileService = fileService;
     }
 
     @Override
     @Transactional
     public List<Recording> getRecordings() {
-//        File dir = new File(storagePath);
-//        File[] otrkeys = dir.listFiles(new FilenameFilter() {
-//
-//            @Override
-//            public boolean accept(File dir, String name) {
-//                return name.endsWith("otrkey");
-//            }
-//        });
-//        otrkeys = otrkeys == null ? new File[0] : otrkeys;
-//        List<Recording> result = new ArrayList<Recording>();
-//        Recording rec;
-//        for (File each : otrkeys) {
-//            rec = new Recording(each.getName());
-//            rec.setAvailable(true);
-//            rec.setCreationDate(new Date(each.lastModified()));
-//            rec.setFilesize(each.length());
-//            result.add(rec);
-//        }
-//        Collections.sort(result, new Comparator<Recording>() {
-//
-//            @Override
-//            public int compare(Recording o1, Recording o2) {
-//                return o2.getStartTime().compareTo(o1.getStartTime());
-//            }
-//        });
         return recordingDAO.findAllByCreationDate();
-//        return result;
     }
 
     @Override
-    public File getRecording(String filename) {
-        File recording = new File(storagePath, filename);
-        return recording.exists() ? recording : null;
+    @Transactional
+    public File getRecording(String filename, boolean addDownload, String ip) {
+        Recording recording = recordingDAO.findByFilename(filename);
+        File file = null;
+        if (recording != null && recording.isAvailable()) {
+            file = fileService.getFile(filename);
+            if (file != null) {
+                if (addDownload) {
+                    Download download = new Download(recording, ip);
+                    downloadDAO.saveOrUpdate(download);
+                    recording.addDownload();
+                }
+            } else {
+                recording.setAvailable(false);
+                logger.warn("File not found: " + filename + "; flagged as unavailable.");
+            }
+        }
+        return file;
     }
 
+    @Override
+    @Transactional
+    public void cancelDownload(String filename) {
+        Recording recording = recordingDAO.findByFilename(filename);
+        File file = null;
+        if (recording != null && recording.isAvailable()) {
+            file = fileService.getFile(filename);
+            if (file != null) {
+                recording.setDownloaded(recording.getDownloaded() - 1);
+            } else {
+                recording.setAvailable(false);
+                logger.warn("File not found: " + filename + "; flagged as unavailable.");
+            }
+        }
+    }
 }

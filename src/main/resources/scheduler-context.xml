@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!-- Quartz scheduled jobs -->
+    <bean id="removeOldRecordings" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="maintenanceService"/>
+        <property name="targetMethod" value="removeOldRecordings"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="checkFileOrphans" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="maintenanceService"/>
+        <property name="targetMethod" value="checkForFileOrphans"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="checkDBOrphans" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="maintenanceService"/>
+        <property name="targetMethod" value="checkForDBOrphans"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <!-- Quartz triggers -->
+    <bean id="removeOldRecordingsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="removeOldRecordings"/>
+        <!-- run every morning at 5 AM -->
+        <property name="cronExpression" value="0 0 5 * * ?"/>
+    </bean>
+
+    <bean id="checkFileOrphansTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- see the example of method invoking job above -->
+        <property name="jobDetail" ref="checkFileOrphans"/>
+        <!-- repeat every 10 minutes -->
+        <property name="cronExpression" value="0 0,10,20,30,40,50 * * * ?"/>
+    </bean>
+
+    <bean id="checkDBOrphansTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <!-- see the example of method invoking job above -->
+        <property name="jobDetail" ref="checkDBOrphans"/>
+        <!-- repeat every 10 minutes -->
+        <property name="cronExpression" value="0 5,15,25,35,45,55 * * * ?"/>
+    </bean>
+
+    <!-- Quartz scheduler factory -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="removeOldRecordingsTrigger"/>
+                <ref bean="checkFileOrphansTrigger"/>
+                <ref bean="checkDBOrphansTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

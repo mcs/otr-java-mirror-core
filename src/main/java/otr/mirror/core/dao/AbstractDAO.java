@@ -1,7 +1,8 @@
 package otr.mirror.core.dao;
 
-import java.util.List;
 import otr.mirror.core.model.AbstractEntity;
+
+import java.util.List;
 
 /**
  * A generic base implementation of the DAO pattern.

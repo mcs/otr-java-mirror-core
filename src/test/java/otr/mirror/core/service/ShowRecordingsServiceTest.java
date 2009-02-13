@@ -1,10 +1,16 @@
 package otr.mirror.core.service;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import otr.mirror.core.OtrTests;
-import java.util.List;
 import otr.mirror.core.dao.RecordingDAO;
 import otr.mirror.core.model.Recording;
 import otr.mirror.core.util.FilenameUtilTest;
+
+import java.util.List;
 
 /**
  *
@@ -12,23 +18,11 @@ import otr.mirror.core.util.FilenameUtilTest;
  */
 public class ShowRecordingsServiceTest extends OtrTests {
 
-    private ShowRecordingsService showRecordingsService;
-    private RecordingDAO recordingDAO;
+    @Autowired private ShowRecordingsService showRecordingsService;
+    @Autowired private RecordingDAO recordingDAO;
 
-    public void setShowRecordingsService(ShowRecordingsService showRecordingsService) {
-        this.showRecordingsService = showRecordingsService;
-    }
-
-    public void setRecordingDAO(RecordingDAO recordingDAO) {
-        this.recordingDAO = recordingDAO;
-    }
-
-    public ShowRecordingsServiceTest(String testName) {
-        super(testName);
-    }
-
-    @Override
-    protected void onSetUpInTransaction() throws Exception {
+    @Before
+    public void onSetUpInTransaction() throws Exception {
         for (String filename : FilenameUtilTest.files) {
             Recording rec = new Recording(filename);
             rec.setAvailable(true);
@@ -39,6 +33,7 @@ public class ShowRecordingsServiceTest extends OtrTests {
     /**
      * Test of getRecordings method, of class ShowRecordingsService.
      */
+    @Test
     public void testGetRecordings() {
         System.out.println("getRecordings");
         List<Recording> result = showRecordingsService.getRecordings();

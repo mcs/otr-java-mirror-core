@@ -1,14 +1,16 @@
 package otr.mirror.core.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import otr.mirror.core.model.Format;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import org.apache.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import otr.mirror.core.model.Format;
 
 /**
  * Provides some useful methods to extract the nested information of an OTRKEY
@@ -26,7 +28,7 @@ public class FilenameUtil {
     public static final int TV_CHANNEL = 4;
     public static final int DURATION = 5;
     public static final int FORMAT = 6;
-    private static final Logger LOGGER = Logger.getLogger(FilenameUtil.class);
+    private static final Log LOGGER = LogFactory.getLog(FilenameUtil.class);
 
     /**
      * This pattern is divided into six groups:

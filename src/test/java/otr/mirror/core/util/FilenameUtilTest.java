@@ -1,16 +1,19 @@
 package otr.mirror.core.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import org.junit.Test;
+import otr.mirror.core.model.Format;
+
 import java.util.Calendar;
 import java.util.Date;
-import junit.framework.TestCase;
-import otr.mirror.core.model.Format;
 
 /**
  * Tests all methods of FilenameUtil.
  *
  * @author Marcus Krassmann
  */
-public class FilenameUtilTest extends TestCase {
+public class FilenameUtilTest {
 
     public static final String[] files = {
         "Katie_Melua_Live_in_Duesseldorf_08.12.31_05-15_3sat_45_TVOON_DE.mpg.avi.otrkey",
@@ -18,13 +21,10 @@ public class FilenameUtilTest extends TestCase {
         "Alexander_09.01.01_20-15_pro7_185_TVOON_DE.mpg.mp4.otrkey"
     };
     
-    public FilenameUtilTest(String testName) {
-        super(testName);
-    }
-
     /**
      * Test of getName method, of class FilenameUtil.
      */
+    @Test
     public void testGetName() {
         System.out.println("getName");
         String filename = files[0];
@@ -36,6 +36,7 @@ public class FilenameUtilTest extends TestCase {
     /**
      * Test of getStartDate method, of class FilenameUtil.
      */
+    @Test
     public void testGetStartDate() {
         System.out.println("getStartDate");
         String filename = files[0];
@@ -50,6 +51,7 @@ public class FilenameUtilTest extends TestCase {
     /**
      * Test of getDuration method, of class FilenameUtil.
      */
+    @Test
     public void testGetDuration() {
         System.out.println("getDuration");
         String filename = files[2];
@@ -61,6 +63,7 @@ public class FilenameUtilTest extends TestCase {
     /**
      * Test of getEndDate method, of class FilenameUtil.
      */
+    @Test
     public void testGetEndDate() {
         System.out.println("getEndDate");
         String filename = files[0];
@@ -75,6 +78,7 @@ public class FilenameUtilTest extends TestCase {
     /**
      * Test of getTvChannel method, of class FilenameUtil.
      */
+    @Test
     public void testGetTvChannel() {
         System.out.println("getTvChannel");
         String filename = files[0];
@@ -86,6 +90,7 @@ public class FilenameUtilTest extends TestCase {
     /**
      * Test of getFormat method, of class FilenameUtil.
      */
+    @Test
     public void testGetFormat() {
         // positive examples
         System.out.println("getFormat");

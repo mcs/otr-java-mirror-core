@@ -1,15 +1,17 @@
 package otr.mirror.core.dao;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import otr.mirror.core.model.AbstractEntity;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * An implementation of the GenericDAO.
@@ -18,16 +20,16 @@ import otr.mirror.core.model.AbstractEntity;
  */
 public abstract class AbstractDAOImpl<T extends AbstractEntity> implements AbstractDAO<T> {
 
-    private static final Logger log = Logger.getLogger(AbstractDAO.class);
+    private static final Log logger = LogFactory.getLog(AbstractDAO.class);
 
     @PersistenceContext
     protected EntityManager em;
 
     protected Session getSession() {
-        log.debug("Called getSession()");
+        logger.debug("Called getSession()");
         Session session = (Session) em.getDelegate();
         if (!session.isOpen()) {
-            log.error("Session's not open: " + session);
+            logger.error("Session's not open: " + session);
         }
         return session;
     }
@@ -50,7 +52,7 @@ public abstract class AbstractDAOImpl<T extends AbstractEntity> implements Abstr
     @Override
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        log.debug("EntityManager = " + em);
+        logger.debug("EntityManager = " + em);
         Criteria crit = getSession().createCriteria(getEntityClass());
         return crit.list();
     }
