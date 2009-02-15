@@ -27,7 +27,7 @@ public class Recording extends AbstractEntity {
     /**
      * Constructs a completely uninitialized recording.
      */
-    protected Recording() {
+    public Recording() {
         // default bean constructor
     }
 
